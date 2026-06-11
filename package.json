@@ -5,11 +5,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/placeholder/xclaude.git"
+    "url": "https://github.com/Jango26/claude-launcher.git"
   },
-  "homepage": "https://github.com/placeholder/xclaude#readme",
+  "homepage": "https://github.com/Jango26/claude-launcher",
   "bugs": {
-    "url": "https://github.com/placeholder/xclaude/issues"
+    "url": "https://github.com/Jango26/claude-launcher/issues"
   },
   "keywords": [
     "claude",
