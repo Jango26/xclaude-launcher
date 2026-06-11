@@ -8,11 +8,15 @@ export async function runConfigCommand(action?: string): Promise<number> {
   const promptService = new PromptService();
 
   while (true) {
+    const fromArg = action !== undefined;
     const nextAction = normalizeAction(action) ?? (await promptService.chooseConfigAction());
     action = undefined;
 
     if (nextAction === 'path') {
       console.log(getConfigPath());
+      if (fromArg) {
+        return 0;
+      }
       continue;
     }
 
@@ -76,6 +80,9 @@ export async function runConfigCommand(action?: string): Promise<number> {
         }
       }
 
+      if (fromArg) {
+        return 0;
+      }
       continue;
     }
 
@@ -94,6 +101,9 @@ export async function runConfigCommand(action?: string): Promise<number> {
         return 0;
       }
 
+      if (fromArg) {
+        return 0;
+      }
       continue;
     }
 
@@ -121,6 +131,9 @@ export async function runConfigCommand(action?: string): Promise<number> {
         continue;
       }
 
+      if (fromArg) {
+        return 0;
+      }
       continue;
     }
 
