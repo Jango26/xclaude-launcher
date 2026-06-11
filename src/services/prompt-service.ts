@@ -144,23 +144,6 @@ export class PromptService {
   }
 
   async promptProfileInput(existing?: Profile): Promise<PromptProfileInput | 'back' | 'exit'> {
-    const action = await select({
-      message: existing ? `Edit profile: ${existing.name}` : 'Add profile',
-      choices: [
-        { name: 'Continue', value: 'continue' },
-        { name: 'Back', value: 'back' },
-        { name: 'Exit', value: 'exit' },
-      ],
-    });
-
-    if (action === 'back') {
-      return 'back';
-    }
-
-    if (action === 'exit') {
-      return 'exit';
-    }
-
     const name = await input({
       message: 'Profile name',
       default: existing?.name,

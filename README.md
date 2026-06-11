@@ -1,16 +1,61 @@
 # Claude Launcher
 
-Launch Claude Code with reusable environment profiles.
+[English](./README.md) | [中文](./README.zh-CN.md)
+
+`xclaude` solves the problem of switching Claude Code between multiple environment sources.
+
+If you work with more than one Claude setup, such as:
+
+- the default official Claude service
+- a proxy or gateway endpoint
+- different API base URLs for work and personal use
+- different model defaults for different tasks
+- different auth tokens across environments
+
+then repeatedly exporting environment variables by hand is tedious and error-prone.
+
+`xclaude` lets you save each setup as a reusable profile, then launch `claude` with the right environment in one step.
 
 ## Install
 
 ```bash
-npm install -g xclaude
+npm install -g claude-launcher
 ```
 
 ## Prerequisites
 
 `xclaude` launches the local `claude` command, so Claude Code must already be installed and available in your `PATH`.
+
+## QuickStart
+
+```bash
+# 1. Add your first profile
+xclaude config add
+```
+
+When creating a profile, you will be prompted for:
+
+- `Profile name`: the label shown in the launcher
+- `ANTHROPIC_AUTH_TOKEN`: your Claude auth token
+- `ANTHROPIC_BASE_URL`: optional custom API base URL
+- `ANTHROPIC_MODEL`: optional default model
+- `ANTHROPIC_DEFAULT_HAIKU_MODEL`: optional Haiku override
+- `ANTHROPIC_DEFAULT_SONNET_MODEL`: optional Sonnet override
+- `ANTHROPIC_DEFAULT_OPUS_MODEL`: optional Opus override
+- `CLAUDE_CODE_SUBAGENT_MODEL`: optional subagent model override
+- Additional custom ENV vars if needed
+
+You can leave optional fields empty and only set the values you actually use.
+
+```bash
+# 2. Launch with the interactive picker
+xclaude
+
+# 3. Or launch a specific profile directly
+xclaude --profile my-profile
+```
+
+If you have not created any profiles yet, start with `xclaude config add`.
 
 ## Usage
 
