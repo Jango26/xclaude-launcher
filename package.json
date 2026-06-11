@@ -1,0 +1,43 @@
+{
+  "name": "xclaude",
+  "version": "0.1.0",
+  "description": "Launch Claude Code with reusable environment profiles.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/placeholder/xclaude.git"
+  },
+  "homepage": "https://github.com/placeholder/xclaude#readme",
+  "bugs": {
+    "url": "https://github.com/placeholder/xclaude/issues"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "cli",
+    "launcher",
+    "profiles"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "type": "module",
+  "bin": {
+    "xclaude": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && chmod +x dist/index.js",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^7.5.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.1",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  }
+}
