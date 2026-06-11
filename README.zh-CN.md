@@ -19,7 +19,7 @@
 ## 安装
 
 ```bash
-npm install -g claude-launcher
+npm install -g xclaude-launcher
 ```
 
 ## 前置要求

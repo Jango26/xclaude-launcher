@@ -19,7 +19,7 @@ then repeatedly exporting environment variables by hand is tedious and error-pro
 ## Install
 
 ```bash
-npm install -g claude-launcher
+npm install -g xclaude-launcher
 ```
 
 ## Prerequisites
