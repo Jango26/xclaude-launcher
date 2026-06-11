@@ -1,4 +1,4 @@
-# Claude Launcher
+# xClaude Launcher
 
 [English](./README.md) | [中文](./README.zh-CN.md)
 
@@ -62,7 +62,6 @@ If you have not created any profiles yet, start with `xclaude config add`.
 ```bash
 xclaude
 xclaude --profile my-profile
-xclaude --list
 xclaude config
 xclaude config path
 ```
@@ -70,14 +69,18 @@ xclaude config path
 ## What it does
 
 - `xclaude` opens an interactive profile picker and launches `claude` with the selected profile environment.
-- `xclaude config` opens the interactive profile manager.
+- `xclaude config` opens the interactive profile manager. The top-level menu provides:
+  - `List profiles` — pick a profile and then choose `View` / `Edit` / `Remove`. `View` prints the profile's environment variables one entry per block (key on one line, value on the next) so it stays readable on narrow terminals.
+  - `Add profile` — create a new profile.
+  - `Edit profile` — pick a profile and edit it directly.
+  - `Show config path` — print the absolute path of the config file.
 
 ## Config file
 
 Profiles are stored in:
 
 ```text
-~/.claude-launcher/config.json
+~/.xclaude-launcher/config.json
 ```
 
 ## Built-in environment variables
@@ -104,5 +107,5 @@ npm run start -- --help
 
 ## Links
 
-- Repository: https://github.com/placeholder/xclaude
-- Issues: https://github.com/placeholder/xclaude/issues
+- Repository: https://github.com/Jango26/xclaude-launcher
+- Issues: https://github.com/Jango26/xclaude-launcher/issues

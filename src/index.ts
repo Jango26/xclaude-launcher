@@ -52,7 +52,7 @@ function parseRunClaudeOptions(args: string[]): { profile?: string; list?: boole
 }
 
 function printHelp(): void {
-  console.log(`xclaude - Claude launcher\n\nUsage:\n  xclaude [--profile <name-or-id>] [--list] [claude args...]\n  xclaude config [list|add|edit]\n`);
+  console.log(`xclaude - xClaude Launcher\n\nUsage:\n  xclaude [claude args...]\n  xclaude config [list|add|edit]\n`);
 }
 
 main().catch((error: unknown) => {

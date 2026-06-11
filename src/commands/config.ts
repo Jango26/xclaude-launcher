@@ -23,9 +23,9 @@ export async function runConfigCommand(action?: string): Promise<number> {
     if (nextAction === 'list') {
       while (true) {
         const config = await configService.getConfig();
-        promptService.printProfiles(config.profiles, config.lastUsedProfileId);
 
         if (config.profiles.length === 0) {
+          console.log('No profiles');
           break;
         }
 
@@ -37,31 +37,42 @@ export async function runConfigCommand(action?: string): Promise<number> {
           break;
         }
 
-        const profileAction = await promptService.chooseProfileAction();
-        if (profileAction === 'exit') {
-          return 0;
-        }
-        if (profileAction === 'back') {
-          continue;
-        }
-
-        if (profileAction === 'edit') {
-          const input = await promptService.promptProfileInput(profile);
-          if (input === 'exit') {
+        let backToProfiles = false;
+        while (!backToProfiles) {
+          const profileAction = await promptService.chooseProfileAction();
+          if (profileAction === 'exit') {
             return 0;
           }
-          if (input === 'back') {
+          if (profileAction === 'back') {
+            backToProfiles = true;
+            break;
+          }
+
+          if (profileAction === 'view') {
+            promptService.printProfileEnv(profile);
             continue;
           }
 
-          const updated = await configService.updateProfile(profile.id, input);
-          console.log(`Updated profile: ${updated.name}`);
-          continue;
-        }
+          if (profileAction === 'edit') {
+            const input = await promptService.promptProfileInput(profile);
+            if (input === 'exit') {
+              return 0;
+            }
+            if (input === 'back') {
+              continue;
+            }
 
-        if (await promptService.confirmRemoveProfile(profile)) {
-          const removed = await configService.removeProfile(profile.id);
-          console.log(`Removed profile: ${removed.name}`);
+            const updated = await configService.updateProfile(profile.id, input);
+            console.log(`Updated profile: ${updated.name}`);
+            continue;
+          }
+
+          if (await promptService.confirmRemoveProfile(profile)) {
+            const removed = await configService.removeProfile(profile.id);
+            console.log(`Removed profile: ${removed.name}`);
+            backToProfiles = true;
+            break;
+          }
         }
       }
 

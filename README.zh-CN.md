@@ -1,4 +1,4 @@
-# Claude Launcher
+# xClaude Launcher
 
 [English](./README.md) | [中文](./README.zh-CN.md)
 
@@ -71,7 +71,6 @@ xclaude config add
 ```bash
 xclaude
 xclaude --profile my-profile
-xclaude --list
 xclaude config
 xclaude config path
 ```
@@ -79,14 +78,18 @@ xclaude config path
 ## 这个工具会做什么
 
 - `xclaude` 会打开一个交互式 profile 选择器，并使用所选 profile 的环境变量启动 `claude`
-- `xclaude config` 会打开交互式 profile 管理界面
+- `xclaude config` 会打开交互式 profile 管理界面，顶层菜单包含：
+  - `List profiles`：选择一个 profile 后再选 `View` / `Edit` / `Remove`。`View` 会把该 profile 的环境变量逐项打印，每个变量 key 一行、value 在下一行缩进显示，窄终端也不会被折断。
+  - `Add profile`：新增一个 profile
+  - `Edit profile`：直接选一个 profile 进行编辑
+  - `Show config path`：打印配置文件的绝对路径
 
 ## 配置文件位置
 
 profile 保存在：
 
 ```text
-~/.claude-launcher/config.json
+~/.xclaude-launcher/config.json
 ```
 
 ## 内置支持的环境变量
@@ -113,5 +116,5 @@ npm run start -- --help
 
 ## 链接
 
-- Repository: https://github.com/placeholder/xclaude
-- Issues: https://github.com/placeholder/xclaude/issues
+- Repository: https://github.com/Jango26/xclaude-launcher
+- Issues: https://github.com/Jango26/xclaude-launcher/issues

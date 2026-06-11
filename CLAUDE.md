@@ -86,7 +86,7 @@ The codebase is small but intentionally split into command, service, adapter, an
 If behavior changes span prompts, persistence, and launch behavior, keep the change split along these boundaries instead of pushing everything into a command module.
 
 ### Config persistence and data flow
-Profiles are stored in `~/.claude-launcher/config.json`. The exact location is centralized in `src/utils/paths.ts`.
+Profiles are stored in `~/.xclaude-launcher/config.json`. The exact location is centralized in `src/utils/paths.ts`.
 
 Flow:
 1. `run-claude` or `config` creates a `ConfigService`.

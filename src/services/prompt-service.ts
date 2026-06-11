@@ -14,7 +14,6 @@ export class PromptService {
       choices: profiles.map((profile) => ({
         name: this.formatProfileLabel(profile, lastUsedProfileId),
         value: profile.id,
-        description: this.describeProfile(profile),
       })),
     });
 
@@ -98,7 +97,6 @@ export class PromptService {
         ...profiles.map((profile) => ({
           name: this.formatProfileLabel(profile, lastUsedProfileId),
           value: profile.id,
-          description: this.describeProfile(profile),
         })),
         {
           name: 'Back',
@@ -124,16 +122,37 @@ export class PromptService {
     return profiles.find((item) => item.id === answer) ?? 'back';
   }
 
-  async chooseProfileAction(): Promise<'edit' | 'remove' | 'back' | 'exit'> {
+  async chooseProfileAction(): Promise<'view' | 'edit' | 'remove' | 'back' | 'exit'> {
     return select({
       message: 'Choose an action',
       choices: [
+        { name: 'View', value: 'view' },
         { name: 'Edit', value: 'edit' },
         { name: 'Remove', value: 'remove' },
         { name: 'Back', value: 'back' },
         { name: 'Exit', value: 'exit' },
       ],
     });
+  }
+
+  printProfileEnv(profile: Profile): void {
+    const entries = Object.entries(profile.env);
+
+    console.log('');
+    console.log(`Profile: ${profile.name}  (${profile.id})`);
+    console.log('');
+
+    if (entries.length === 0) {
+      console.log('  (no env)');
+      console.log('');
+      return;
+    }
+
+    for (const [key, value] of entries) {
+      console.log(`  ${key}`);
+      console.log(`    ${value}`);
+      console.log('');
+    }
   }
 
   async confirmRemoveProfile(profile: Profile): Promise<boolean> {
