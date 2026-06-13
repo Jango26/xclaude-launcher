@@ -1,7 +1,10 @@
 #!/usr/bin/env node
+import { createRequire } from 'node:module';
 import { runClaudeCommand } from './commands/run-claude.js';
 import { runConfigCommand } from './commands/config.js';
 import { CliError } from './utils/errors.js';
+
+const pkg = createRequire(import.meta.url)('../package.json') as { version: string };
 
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
@@ -9,6 +12,11 @@ async function main(): Promise<void> {
 
   if (command === '--help' || command === '-h') {
     printHelp();
+    return;
+  }
+
+  if (command === '--version' || command === '-v') {
+    console.log(pkg.version);
     return;
   }
 
@@ -52,7 +60,7 @@ function parseRunClaudeOptions(args: string[]): { profile?: string; list?: boole
 }
 
 function printHelp(): void {
-  console.log(`xclaude - xClaude Launcher\n\nUsage:\n  xclaude [claude args...]\n  xclaude config [list|add|edit|global-env|path]\n`);
+  console.log(`xclaude - xClaude Launcher v${pkg.version}\n\nUsage:\n  xclaude [claude args...]\n  xclaude config [list|add|edit|global-env|path]\n  xclaude --version\n`);
 }
 
 main().catch((error: unknown) => {
