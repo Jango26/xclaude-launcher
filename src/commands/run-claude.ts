@@ -26,5 +26,5 @@ export async function runClaudeCommand(options: RunClaudeOptions): Promise<numbe
 
   const { ClaudeLauncherService } = await import('../services/claude-launcher.js');
   const launcher = new ClaudeLauncherService();
-  return launcher.launch(profile, options.claudeArgs);
+  return launcher.launch(profile, options.claudeArgs, config.globalEnv);
 }

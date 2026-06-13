@@ -24,6 +24,67 @@ export async function runConfigCommand(action?: string): Promise<number> {
       return 0;
     }
 
+    if (nextAction === 'global-env') {
+      let leave = false;
+      while (!leave) {
+        const env = await configService.getGlobalEnv();
+        const action = await promptService.chooseGlobalEnvAction();
+        if (action === 'exit') {
+          return 0;
+        }
+        if (action === 'back') {
+          leave = true;
+          break;
+        }
+        if (action === 'view') {
+          promptService.printGlobalEnv(env);
+          continue;
+        }
+        if (action === 'add') {
+          const { key, value } = await promptService.promptGlobalEnvEntry();
+          const next = { ...env, [key]: value };
+          await configService.setGlobalEnv(next);
+          console.log(`Added ${key}`);
+          continue;
+        }
+        if (action === 'edit') {
+          const key = await promptService.chooseGlobalEnvKey(env, 'Choose an ENV to edit');
+          if (key === 'back') {
+            console.log('No ENV to edit');
+            continue;
+          }
+          const updated = await promptService.promptGlobalEnvEntry(key, env[key]);
+          const next = { ...env };
+          if (updated.key !== key) {
+            delete next[key];
+          }
+          next[updated.key] = updated.value;
+          await configService.setGlobalEnv(next);
+          console.log(`Updated ${updated.key}`);
+          continue;
+        }
+        if (action === 'remove') {
+          const key = await promptService.chooseGlobalEnvKey(env, 'Choose an ENV to remove');
+          if (key === 'back') {
+            console.log('No ENV to remove');
+            continue;
+          }
+          if (await promptService.confirmRemoveGlobalEnv(key)) {
+            const next = { ...env };
+            delete next[key];
+            await configService.setGlobalEnv(next);
+            console.log(`Removed ${key}`);
+          }
+          continue;
+        }
+      }
+
+      if (fromArg) {
+        return 0;
+      }
+      continue;
+    }
+
     if (nextAction === 'list') {
       while (true) {
         const config = await configService.getConfig();
@@ -141,12 +202,20 @@ export async function runConfigCommand(action?: string): Promise<number> {
   }
 }
 
-function normalizeAction(action?: string): 'list' | 'add' | 'edit' | 'path' | undefined {
+function normalizeAction(
+  action?: string,
+): 'list' | 'add' | 'edit' | 'global-env' | 'path' | undefined {
   if (!action) {
     return undefined;
   }
 
-  if (action === 'list' || action === 'add' || action === 'edit' || action === 'path') {
+  if (
+    action === 'list' ||
+    action === 'add' ||
+    action === 'edit' ||
+    action === 'global-env' ||
+    action === 'path'
+  ) {
     return action;
   }
 

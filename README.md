@@ -63,6 +63,7 @@ If you have not created any profiles yet, start with `xclaude config add`.
 xclaude
 xclaude --profile my-profile
 xclaude config
+xclaude config global-env
 xclaude config path
 ```
 
@@ -73,7 +74,14 @@ xclaude config path
   - `List profiles` — pick a profile and then choose `View` / `Edit` / `Remove`. `View` prints the profile's environment variables one entry per block (key on one line, value on the next) so it stays readable on narrow terminals.
   - `Add profile` — create a new profile.
   - `Edit profile` — pick a profile and edit it directly.
+  - `Manage global ENV` — manage environment variables shared by every profile. The submenu provides `View` / `Add` / `Edit` / `Remove`.
   - `Show config path` — print the absolute path of the config file.
+
+## Global ENV
+
+Global ENV is a set of environment variables shared by every profile. At launch they are merged in the order `process.env → globalEnv → profile.env`, so a profile-level key always wins over a global one with the same name.
+
+Use it for things that should apply across all profiles — proxies, telemetry switches, sandbox flags, etc. There are no built-in keys or defaults; every entry is one you add yourself.
 
 ## Config file
 

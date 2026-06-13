@@ -72,6 +72,7 @@ xclaude config add
 xclaude
 xclaude --profile my-profile
 xclaude config
+xclaude config global-env
 xclaude config path
 ```
 
@@ -82,7 +83,14 @@ xclaude config path
   - `List profiles`：选择一个 profile 后再选 `View` / `Edit` / `Remove`。`View` 会把该 profile 的环境变量逐项打印，每个变量 key 一行、value 在下一行缩进显示，窄终端也不会被折断。
   - `Add profile`：新增一个 profile
   - `Edit profile`：直接选一个 profile 进行编辑
+  - `Manage global ENV`：管理所有 profile 共享的全局环境变量，子菜单提供 `View` / `Add` / `Edit` / `Remove`
   - `Show config path`：打印配置文件的绝对路径
+
+## 全局 ENV（Global ENV）
+
+全局 ENV 是一组在所有 profile 之间共享的环境变量。启动 `claude` 时的合并顺序为 `process.env → globalEnv → profile.env`，所以同名 key 会以 profile 里的值为准，全局值只会在 profile 没设置时生效。
+
+适合用来放跨 profile 通用的开关，例如代理、telemetry 开关、sandbox 标记等。不会内置任何 key 和默认值，全部由你自己添加。
 
 ## 配置文件位置
 

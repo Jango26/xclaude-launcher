@@ -3,6 +3,17 @@ import type { Profile, ProfileEnv, PromptProfileInput } from '../models/config.j
 import { maskEnvValue, validateEnvKey } from '../utils/env.js';
 import { CliError } from '../utils/errors.js';
 
+const PROFILE_FIRST_CLASS_KEYS = new Set([
+  'ANTHROPIC_AUTH_TOKEN',
+  'ANTHROPIC_BASE_URL',
+  'ANTHROPIC_MODEL',
+  'ANTHROPIC_DEFAULT_HAIKU_MODEL',
+  'ANTHROPIC_DEFAULT_SONNET_MODEL',
+  'ANTHROPIC_DEFAULT_OPUS_MODEL',
+  'CLAUDE_CODE_SUBAGENT_MODEL',
+]);
+
+
 export class PromptService {
   async chooseProfile(profiles: Profile[], lastUsedProfileId?: string): Promise<Profile> {
     if (profiles.length === 0) {
@@ -57,17 +68,95 @@ export class PromptService {
     return profile;
   }
 
-  async chooseConfigAction(): Promise<'list' | 'add' | 'edit' | 'path' | 'exit'> {
+  async chooseConfigAction(): Promise<'list' | 'add' | 'edit' | 'global-env' | 'path' | 'exit'> {
     return select({
       message: 'Choose a config action',
       choices: [
         { name: 'List profiles', value: 'list' },
         { name: 'Add profile', value: 'add' },
         { name: 'Edit profile', value: 'edit' },
+        { name: 'Manage global ENV', value: 'global-env' },
         { name: 'Show config path', value: 'path' },
         { name: 'Exit', value: 'exit' },
       ],
     });
+  }
+
+  printGlobalEnv(env: ProfileEnv): void {
+    const entries = Object.entries(env);
+    console.log('');
+    console.log('Global ENV');
+    console.log('');
+    if (entries.length === 0) {
+      console.log('  (no env)');
+      console.log('');
+      return;
+    }
+    for (const [key, value] of entries) {
+      console.log(`  ${key}`);
+      console.log(`    ${value}`);
+      console.log('');
+    }
+  }
+
+  async chooseGlobalEnvAction(): Promise<'view' | 'add' | 'edit' | 'remove' | 'back' | 'exit'> {
+    return select({
+      message: 'Global ENV',
+      choices: [
+        { name: 'View', value: 'view' },
+        { name: 'Add', value: 'add' },
+        { name: 'Edit', value: 'edit' },
+        { name: 'Remove', value: 'remove' },
+        { name: 'Back', value: 'back' },
+        { name: 'Exit', value: 'exit' },
+      ],
+    });
+  }
+
+  async chooseGlobalEnvKey(env: ProfileEnv, message: string): Promise<string | 'back'> {
+    const entries = Object.entries(env);
+    if (entries.length === 0) {
+      return 'back';
+    }
+
+    const answer = await select({
+      message,
+      choices: [
+        ...entries.map(([key, value]) => ({
+          name: `${key}=${maskEnvValue(key, value)}`,
+          value: key,
+        })),
+        { name: 'Back', value: '__back__' },
+      ],
+    });
+
+    return answer === '__back__' ? 'back' : answer;
+  }
+
+  async promptGlobalEnvEntry(initialKey?: string, initialValue?: string): Promise<{ key: string; value: string }> {
+    const key = (await input({
+      message: 'ENV name',
+      default: initialKey,
+      validate: (value) => {
+        try {
+          validateEnvKey(value.trim());
+          return true;
+        } catch (error) {
+          return (error as Error).message;
+        }
+      },
+    })).trim();
+
+    const value = await input({
+      message: `ENV value (${key})`,
+      default: initialValue,
+    });
+
+    return { key, value };
+  }
+
+  async confirmRemoveGlobalEnv(key: string): Promise<boolean> {
+    return confirm({ message: `Remove ${key}?`, default: false });
   }
 
   async confirmLaunchProfile(profile: Profile, extraArgs: string[] = []): Promise<boolean> {
@@ -204,7 +293,7 @@ export class PromptService {
       default: existing?.env.CLAUDE_CODE_SUBAGENT_MODEL,
     });
 
-    const extraEnv = await this.promptExtraEnv(existing?.env ?? {});
+    const extraEnv = await this.promptExtraEnv(existing?.env ?? {}, PROFILE_FIRST_CLASS_KEYS);
 
     return {
       name: name.trim(),
@@ -238,18 +327,9 @@ export class PromptService {
     }
   }
 
-  private async promptExtraEnv(existingEnv: ProfileEnv): Promise<ProfileEnv> {
+  private async promptExtraEnv(existingEnv: ProfileEnv, skipKeys: Set<string>): Promise<ProfileEnv> {
     const extraEnv: ProfileEnv = {};
-    const presetEntries = Object.entries(existingEnv).filter(
-      ([key]) =>
-        key !== 'ANTHROPIC_AUTH_TOKEN' &&
-        key !== 'ANTHROPIC_BASE_URL' &&
-        key !== 'ANTHROPIC_MODEL' &&
-        key !== 'ANTHROPIC_DEFAULT_HAIKU_MODEL' &&
-        key !== 'ANTHROPIC_DEFAULT_SONNET_MODEL' &&
-        key !== 'ANTHROPIC_DEFAULT_OPUS_MODEL' &&
-        key !== 'CLAUDE_CODE_SUBAGENT_MODEL',
-    );
+    const presetEntries = Object.entries(existingEnv).filter(([key]) => !skipKeys.has(key));
 
     for (const [key, value] of presetEntries) {
       const keep = await confirm({

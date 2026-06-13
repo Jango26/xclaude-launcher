@@ -9,11 +9,8 @@ export function validateEnvKey(key: string): void {
   }
 }
 
-export function mergeEnv(profileEnv: ProfileEnv): NodeJS.ProcessEnv {
-  return {
-    ...process.env,
-    ...profileEnv,
-  };
+export function mergeEnv(...envs: ProfileEnv[]): NodeJS.ProcessEnv {
+  return Object.assign({}, process.env, ...envs);
 }
 
 export function maskEnvValue(_key: string, value: string): string {

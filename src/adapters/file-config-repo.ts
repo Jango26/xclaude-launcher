@@ -6,6 +6,7 @@ import { getConfigDir, getConfigPath, getLegacyConfigPath } from '../utils/paths
 const DEFAULT_CONFIG: ConfigFile = {
   version: 1,
   profiles: [],
+  globalEnv: {},
 };
 
 export class FileConfigRepository {
@@ -49,6 +50,7 @@ export class FileConfigRepository {
         version: parsed.version ?? 1,
         profiles: parsed.profiles ?? [],
         lastUsedProfileId: parsed.lastUsedProfileId,
+        globalEnv: parsed.globalEnv ?? {},
       };
     } catch {
       throw new CliError(`Failed to read config: ${filePath}`);

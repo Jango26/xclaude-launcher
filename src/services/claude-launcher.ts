@@ -6,9 +6,9 @@ import { CliError } from '../utils/errors.js';
 export class ClaudeLauncherService {
   constructor(private readonly processRunner = new ProcessRunner()) {}
 
-  async launch(profile: Profile, extraArgs: string[] = []): Promise<number> {
+  async launch(profile: Profile, extraArgs: string[] = [], globalEnv: Profile['env'] = {}): Promise<number> {
     try {
-      return await this.processRunner.run(profile.command, [...profile.args, ...extraArgs], mergeEnv(profile.env));
+      return await this.processRunner.run(profile.command, [...profile.args, ...extraArgs], mergeEnv(globalEnv, profile.env));
     } catch (error) {
       const errno = error as NodeJS.ErrnoException;
       if (errno.code === 'ENOENT') {

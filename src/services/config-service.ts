@@ -1,4 +1,4 @@
-import type { ConfigFile, Profile, PromptProfileInput } from '../models/config.js';
+import type { ConfigFile, Profile, ProfileEnv, PromptProfileInput } from '../models/config.js';
 import { FileConfigRepository } from '../adapters/file-config-repo.js';
 import { buildProfileEnv } from '../utils/env.js';
 import { CliError } from '../utils/errors.js';
@@ -90,6 +90,18 @@ export class ConfigService {
 
     await this.repository.save(config);
     return profile;
+  }
+
+  async getGlobalEnv(): Promise<ProfileEnv> {
+    const config = await this.repository.load();
+    return config.globalEnv;
+  }
+
+  async setGlobalEnv(env: ProfileEnv): Promise<ProfileEnv> {
+    const config = await this.repository.load();
+    config.globalEnv = env;
+    await this.repository.save(config);
+    return config.globalEnv;
   }
 
   async markLastUsed(profileId: string): Promise<void> {

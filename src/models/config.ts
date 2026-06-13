@@ -12,6 +12,7 @@ export interface ConfigFile {
   version: number;
   profiles: Profile[];
   lastUsedProfileId?: string;
+  globalEnv: ProfileEnv;
 }
 
 export interface PromptProfileInput {
