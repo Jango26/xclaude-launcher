@@ -18,13 +18,37 @@ export async function runClaudeCommand(options: RunClaudeOptions): Promise<numbe
     return 0;
   }
 
-  const profile = options.profile
-    ? await configService.getProfileByIdOrName(options.profile)
-    : await promptService.chooseProfileForLaunch(sortedProfiles, config.lastUsedProfileId);
+  const selection = options.profile
+    ? resolveProfileFlag(options.profile, configService)
+    : promptService.chooseProfileForLaunch(sortedProfiles, config.lastUsedProfileId);
 
-  await configService.markLastUsed(profile.id);
+  const resolved = await selection;
+  const isBlank = resolved === 'blank' || resolved === 'pure-blank';
+  const profile = isBlank ? createBlankProfile() : resolved;
+  const globalEnv = resolved === 'pure-blank' ? {} : config.globalEnv;
+
+  if (!isBlank) {
+    await configService.markLastUsed(profile.id);
+  }
 
   const { ClaudeLauncherService } = await import('../services/claude-launcher.js');
   const launcher = new ClaudeLauncherService();
-  return launcher.launch(profile, options.claudeArgs, config.globalEnv);
+  return launcher.launch(profile, options.claudeArgs, globalEnv);
+}
+
+async function resolveProfileFlag(value: string, configService: ConfigService) {
+  const normalized = value.toLowerCase();
+  if (normalized === 'blank') return 'blank' as const;
+  if (normalized === 'pure-blank' || normalized === 'pureblank') return 'pure-blank' as const;
+  return configService.getProfileByIdOrName(value);
+}
+
+function createBlankProfile() {
+  return {
+    id: '__blank__',
+    name: 'Blank',
+    command: 'claude',
+    args: [],
+    env: {},
+  };
 }

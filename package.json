@@ -1,6 +1,6 @@
 {
   "name": "xclaude-launcher",
-  "version": "0.1.6",
+  "version": "0.1.8",
   "description": "Launch Claude Code with reusable environment profiles.",
   "license": "MIT",
   "repository": {

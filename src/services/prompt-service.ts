@@ -36,11 +36,7 @@ export class PromptService {
     return profile;
   }
 
-  async chooseProfileForLaunch(profiles: Profile[], lastUsedProfileId?: string): Promise<Profile> {
-    if (profiles.length === 0) {
-      throw new CliError('No profiles available yet. Run xclaude config add first');
-    }
-
+  async chooseProfileForLaunch(profiles: Profile[], lastUsedProfileId?: string): Promise<Profile | 'blank' | 'pure-blank'> {
     const answer = await select({
       message: 'Launch profile',
       choices: [
@@ -48,6 +44,16 @@ export class PromptService {
           name: this.formatProfileLabel(profile, lastUsedProfileId),
           value: profile.id,
         })),
+        {
+          name: 'Blank (no profile env)',
+          value: '__blank__',
+          description: 'Launch Claude without injecting any profile env (global ENV still applied)',
+        },
+        {
+          name: 'Pure blank (no profile env + no global env)',
+          value: '__pure_blank__',
+          description: 'Launch Claude without injecting any profile env or global env',
+        },
         {
           name: 'Exit',
           value: '__exit__',
@@ -58,6 +64,14 @@ export class PromptService {
 
     if (answer === '__exit__') {
       throw new CliError('Launch cancelled');
+    }
+
+    if (answer === '__blank__') {
+      return 'blank';
+    }
+
+    if (answer === '__pure_blank__') {
+      return 'pure-blank';
     }
 
     const profile = profiles.find((item) => item.id === answer);
