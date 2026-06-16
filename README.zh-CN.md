@@ -2,6 +2,8 @@
 
 [English](./README.md) | [中文](./README.zh-CN.md)
 
+![](./assets/introduction.zh-CN.png)
+
 `xclaude` 用来解决 Claude Code 在多个环境源之间切换麻烦的问题。
 
 如果你平时会在多个 Claude 配置之间来回切换，比如：

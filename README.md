@@ -2,6 +2,8 @@
 
 [English](./README.md) | [中文](./README.zh-CN.md)
 
+![](./assets/introduction.png)
+
 `xclaude` solves the problem of switching Claude Code between multiple environment sources.
 
 If you work with more than one Claude setup, such as:

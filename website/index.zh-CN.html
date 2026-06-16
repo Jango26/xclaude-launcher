@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -51,8 +51,8 @@
       <span class="ml-2 px-2 py-0.5 bg-black text-neoYellow text-xs font-bold">v1.0</span>
     </div>
     <div class="hidden md:flex items-center gap-6 text-sm font-bold uppercase">
-      <a href="#flow" class="hover:bg-neoPink px-2 py-1">Flow</a>
-      <a href="#install" class="hover:bg-neoBlue px-2 py-1">Install</a>
+      <a href="#flow" class="hover:bg-neoPink px-2 py-1">流程</a>
+      <a href="#install" class="hover:bg-neoBlue px-2 py-1">安装</a>
       <a href="https://github.com" class="border-2 border-black bg-white px-3 py-1 shadow-neo-sm hover:bg-neoYellow active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all">GITHUB →</a>
     </div>
   </div>
@@ -67,7 +67,7 @@
       <span class="border-2 border-black bg-neoPurple px-2 py-0.5 text-xs font-bold uppercase">Profile-Based</span>
     </div>
     <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.1] tracking-tight">
-      <span class="bg-neoYellow border-2 border-black px-3 inline-block shadow-neo">One-tap switch</span> model backends, launch Claude
+      <span class="bg-neoYellow border-2 border-black px-3 inline-block shadow-neo">一键切换</span> 模型服务启动 Claude
     </h1>
   </section>
 
@@ -75,27 +75,27 @@
   <section id="install" class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6">
     <div class="bg-black text-white border-2 border-black shadow-neo-lg p-6">
       <div class="text-xs font-bold uppercase text-neoYellow">QUICK START</div>
-      <h3 class="text-2xl font-extrabold mt-2 uppercase">Up and running in 30s</h3>
+      <h3 class="text-2xl font-extrabold mt-2 uppercase">30 秒上手</h3>
       <pre class="mt-4 bg-neoBg text-black border-2 border-neoYellow p-3 text-xs leading-relaxed">$ npm install -g xclaude-launcher
 $ xclaude config
 $ xclaude</pre>
-      <p class="text-xs text-gray-300 mt-3">Config stored at: <span class="text-neoYellow">~/.xclaude-launcher/config.json</span></p>
+      <p class="text-xs text-gray-300 mt-3">配置存储路径：<span class="text-neoYellow">~/.xclaude-launcher/config.json</span></p>
     </div>
     <div class="bg-white border-2 border-black shadow-neo-lg p-6">
-      <div class="text-xs font-bold uppercase">WHY</div>
-      <h3 class="text-2xl font-extrabold mt-2 uppercase">No more export hell</h3>
+      <div class="text-xs font-bold uppercase">为什么 / WHY</div>
+      <h3 class="text-2xl font-extrabold mt-2 uppercase">告别 export 地狱</h3>
       <ul class="mt-4 space-y-2 text-sm">
-        <li class="flex gap-2"><span class="bg-neoYellow border border-black px-1 font-bold">✓</span> Juggle multiple API tokens / proxy URLs</li>
-        <li class="flex gap-2"><span class="bg-neoPink border border-black px-1 font-bold">✓</span> Separate profile per model (Opus / Sonnet / Haiku)</li>
-        <li class="flex gap-2"><span class="bg-neoBlue border border-black px-1 font-bold">✓</span> Remembers last used, preselects next time</li>
-        <li class="flex gap-2"><span class="bg-neoPurple border border-black px-1 font-bold">✓</span> Forwards every native claude argument</li>
+        <li class="flex gap-2"><span class="bg-neoYellow border border-black px-1 font-bold">✓</span> 多套 API Token / 中转地址来回切</li>
+        <li class="flex gap-2"><span class="bg-neoPink border border-black px-1 font-bold">✓</span> 不同模型 (Opus / Sonnet / Haiku) 独立 profile</li>
+        <li class="flex gap-2"><span class="bg-neoBlue border border-black px-1 font-bold">✓</span> 记住最近使用，下次默认选中</li>
+        <li class="flex gap-2"><span class="bg-neoPurple border border-black px-1 font-bold">✓</span> 透传所有 claude 原生参数</li>
       </ul>
     </div>
   </section>
   <!-- INTERNAL FLOW -->
   <section id="internal" class="mt-16">
     <div class="flex items-end justify-between border-b-2 border-black pb-3 mb-8">
-      <h2 class="text-3xl md:text-4xl font-extrabold uppercase">Under The Hood</h2>
+      <h2 class="text-3xl md:text-4xl font-extrabold uppercase">内部流程 / Under The Hood</h2>
       <span class="text-xs font-bold uppercase text-gray-600">FLOW</span>
     </div>
 
@@ -111,28 +111,28 @@ $ xclaude</pre>
 
         <div class="flex-1 border-2 border-black bg-neoPink shadow-neo-sm p-4 text-center">
           <div class="text-xs font-bold uppercase text-gray-700">LOAD</div>
-          <div class="font-extrabold uppercase mt-1">Read config</div>
+          <div class="font-extrabold uppercase mt-1">读配置</div>
         </div>
 
         <div class="flex items-center justify-center font-extrabold text-2xl">→</div>
 
         <div class="flex-1 border-2 border-black bg-neoBlue shadow-neo-sm p-4 text-center">
           <div class="text-xs font-bold uppercase text-gray-700">PICK</div>
-          <div class="font-extrabold uppercase mt-1">Choose profile</div>
+          <div class="font-extrabold uppercase mt-1">选 Profile</div>
         </div>
 
         <div class="flex items-center justify-center font-extrabold text-2xl">→</div>
 
         <div class="flex-1 border-2 border-black bg-neoPurple shadow-neo-sm p-4 text-center">
           <div class="text-xs font-bold uppercase text-gray-700">INJECT</div>
-          <div class="font-extrabold uppercase mt-1">Inject ENV</div>
+          <div class="font-extrabold uppercase mt-1">注入 ENV</div>
         </div>
 
         <div class="flex items-center justify-center font-extrabold text-2xl">→</div>
 
         <div class="flex-1 border-2 border-black bg-neoOrange shadow-neo-sm p-4 text-center">
           <div class="text-xs font-bold uppercase text-gray-700">OUTPUT</div>
-          <div class="font-extrabold uppercase mt-1">Launch claude</div>
+          <div class="font-extrabold uppercase mt-1">启动 claude</div>
         </div>
 
       </div>
