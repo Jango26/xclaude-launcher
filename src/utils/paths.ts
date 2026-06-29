@@ -16,3 +16,7 @@ export function getConfigDir(): string {
 export function getConfigPath(): string {
   return path.join(getConfigDir(), 'config.json');
 }
+
+export function getClaudeSettingsPath(): string {
+  return path.join(os.homedir(), '.claude', 'settings.json');
+}

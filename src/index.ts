@@ -2,6 +2,7 @@
 import { createRequire } from 'node:module';
 import { runClaudeCommand } from './commands/run-claude.js';
 import { runConfigCommand } from './commands/config.js';
+import { runApplyCommand, type ApplyOptions } from './commands/apply.js';
 import { CliError } from './utils/errors.js';
 
 const pkg = createRequire(import.meta.url)('../package.json') as { version: string };
@@ -22,6 +23,12 @@ async function main(): Promise<void> {
 
   if (command === 'config') {
     const code = await runConfigCommand(rest[0]);
+    process.exitCode = code;
+    return;
+  }
+
+  if (command === 'apply') {
+    const code = await runApplyCommand(parseApplyOptions(rest));
     process.exitCode = code;
     return;
   }
@@ -59,8 +66,47 @@ function parseRunClaudeOptions(args: string[]): { profile?: string; list?: boole
   return options;
 }
 
+function parseApplyOptions(args: string[]): ApplyOptions {
+  const options: ApplyOptions = {};
+
+  for (let index = 0; index < args.length; index += 1) {
+    const current = args[index];
+
+    if (current === '--clear') {
+      options.clear = true;
+      continue;
+    }
+
+    if (current === '--show') {
+      options.show = true;
+      continue;
+    }
+
+    if (current === '--profile') {
+      const value = args[index + 1];
+      if (!value) {
+        throw new CliError('--profile requires a value');
+      }
+      options.profile = value;
+      index += 1;
+      continue;
+    }
+
+    if (current.startsWith('-')) {
+      throw new CliError(`Unknown apply option: ${current}`);
+    }
+
+    if (options.profile) {
+      throw new CliError(`Unexpected argument: ${current}`);
+    }
+    options.profile = current;
+  }
+
+  return options;
+}
+
 function printHelp(): void {
-  console.log(`xclaude - xClaude Launcher v${pkg.version}\n\nUsage:\n  xclaude [claude args...]\n  xclaude config [list|add|edit|global-env|path]\n  xclaude --version\n`);
+  console.log(`xclaude - xClaude Launcher v${pkg.version}\n\nUsage:\n  xclaude [claude args...]\n  xclaude config [list|add|edit|global-env|path]\n  xclaude apply [<profile>] [--clear|--show]\n  xclaude --version\n`);
 }
 
 main().catch((error: unknown) => {

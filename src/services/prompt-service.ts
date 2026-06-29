@@ -272,38 +272,44 @@ export class PromptService {
       validate: (value) => (value.trim() ? true : 'Profile name is required'),
     });
 
+    const requireNonEmpty = (label: string) => (value: string) =>
+      value.trim() ? true : `${label} is required`;
+
     const anthropicAuthToken = await input({
-      message: 'ANTHROPIC_AUTH_TOKEN',
+      message: 'ANTHROPIC_AUTH_TOKEN (required)',
       default: existing?.env.ANTHROPIC_AUTH_TOKEN,
+      validate: requireNonEmpty('ANTHROPIC_AUTH_TOKEN'),
     });
 
     const anthropicBaseUrl = await input({
-      message: 'ANTHROPIC_BASE_URL',
+      message: 'ANTHROPIC_BASE_URL (required)',
       default: existing?.env.ANTHROPIC_BASE_URL,
+      validate: requireNonEmpty('ANTHROPIC_BASE_URL'),
     });
 
     const anthropicModel = await input({
-      message: 'ANTHROPIC_MODEL',
+      message: 'ANTHROPIC_MODEL (required)',
       default: existing?.env.ANTHROPIC_MODEL,
+      validate: requireNonEmpty('ANTHROPIC_MODEL'),
     });
 
     const anthropicDefaultHaikuModel = await input({
-      message: 'ANTHROPIC_DEFAULT_HAIKU_MODEL',
+      message: 'ANTHROPIC_DEFAULT_HAIKU_MODEL (optional)',
       default: existing?.env.ANTHROPIC_DEFAULT_HAIKU_MODEL,
     });
 
     const anthropicDefaultSonnetModel = await input({
-      message: 'ANTHROPIC_DEFAULT_SONNET_MODEL',
+      message: 'ANTHROPIC_DEFAULT_SONNET_MODEL (optional)',
       default: existing?.env.ANTHROPIC_DEFAULT_SONNET_MODEL,
     });
 
     const anthropicDefaultOpusModel = await input({
-      message: 'ANTHROPIC_DEFAULT_OPUS_MODEL',
+      message: 'ANTHROPIC_DEFAULT_OPUS_MODEL (optional)',
       default: existing?.env.ANTHROPIC_DEFAULT_OPUS_MODEL,
     });
 
     const claudeCodeSubagentModel = await input({
-      message: 'CLAUDE_CODE_SUBAGENT_MODEL',
+      message: 'CLAUDE_CODE_SUBAGENT_MODEL (optional)',
       default: existing?.env.CLAUDE_CODE_SUBAGENT_MODEL,
     });
 
