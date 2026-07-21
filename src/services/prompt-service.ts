@@ -288,9 +288,8 @@ export class PromptService {
     });
 
     const anthropicModel = await input({
-      message: 'ANTHROPIC_MODEL (required)',
+      message: 'ANTHROPIC_MODEL (optional)',
       default: existing?.env.ANTHROPIC_MODEL,
-      validate: requireNonEmpty('ANTHROPIC_MODEL'),
     });
 
     const anthropicDefaultHaikuModel = await input({
